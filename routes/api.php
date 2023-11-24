@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\TaskController;
+use GuzzleHttp\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,7 +23,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/register',[AuthController::class,'Register']);
 
 Route::post('/login',[AuthController::class,'Login']);
+Route::group(['middleware'=>['auth:sanctum']],function(){
 
-Route::post('/logout',[AuthController::class,'Logout']);
+    Route::post('/logout',[AuthController::class,'Logout']);
 
-Route::resource('/tasks',TaskController::class);
+    Route::resource('/tasks',TaskController::class);
+});
