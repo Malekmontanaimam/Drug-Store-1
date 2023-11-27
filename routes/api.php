@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\TaskController;
+use App\Http\Controllers\Admin0Controller;
 use GuzzleHttp\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -28,4 +30,16 @@ Route::group(['middleware'=>['auth:sanctum']],function(){
     Route::post('/logout',[AuthController::class,'Logout']);
 
     Route::resource('/tasks',TaskController::class);
+});
+
+Route::post('/admin/login',[Admin0Controller::class,'Login']);
+Route::post('/admin/register',[Admin0Controller::class,'register']);
+
+
+Route::group(['middleware'=>['auth:sanctum']],function(){
+    Route::post('/admin/logout',[Admin0Controller::class,'Logout']);
+    Route::post('/admin/InsertProduct',[Admin0Controller::class,'InsertProduct']);
+    Route::post('/admin/InsertCategories',[Admin0Controller::class,'InsertCategories']);
+    Route::get('/admin/InsertProduct',[Admin0Controller::class,'getProduct']);
+    Route::get('/admin/InsertCategories',[Admin0Controller::class,'getCategories']);
 });
