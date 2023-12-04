@@ -23,7 +23,7 @@ class LoginRequest extends FormRequest
     {
         return [
             'phone'=>['required'],
-            'password'=>['required'],
+            'password'=>['required']
         ];
     }
 }

@@ -11,6 +11,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\search1;
+use App\Models\Product;
+use App\Models\Categorie;
+
 
 class AuthController extends Controller
 {
@@ -54,5 +58,24 @@ class AuthController extends Controller
         'message'=>'you have successfully been logged out',
         'data'=>$request->user()
     ],200);
+    }
+    public function search(search1  $request)
+    {
+     $request->validated($request->all);
+         
+     $search=Categorie::where('name','like','%'.$request->name.'%')->get('name');
+     if($search->isEmpty()){
+           $search=Product::where('commercial_name','like','%'.$request->name.'%')->get('commercial_name');
+     }
+     return $search;
+
+    }
+    public function show(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required',
+        ]);
+        $name=Product::where('category_id',$request->name)->get('scientific_name');
+        return $name;
     }
 }

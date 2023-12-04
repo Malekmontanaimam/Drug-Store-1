@@ -23,23 +23,27 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::post('/register',[AuthController::class,'Register']);
-
 Route::post('/login',[AuthController::class,'Login']);
+
 Route::group(['middleware'=>['auth:sanctum']],function(){
-
     Route::post('/logout',[AuthController::class,'Logout']);
+    // Route::resource('/tasks',TaskController::class);
+    Route::post('/search',[AuthController::class,'search']);
+Route::post('/show',[AuthController::class,'show']);
 
-    Route::resource('/tasks',TaskController::class);
 });
+
+
+
+// ...............................................................................
+
 
 Route::post('/admin/login',[Admin0Controller::class,'Login']);
 Route::post('/admin/register',[Admin0Controller::class,'register']);
-
-
 Route::group(['middleware'=>['auth:sanctum']],function(){
     Route::post('/admin/logout',[Admin0Controller::class,'Logout']);
     Route::post('/admin/InsertProduct',[Admin0Controller::class,'InsertProduct']);
     Route::post('/admin/InsertCategories',[Admin0Controller::class,'InsertCategories']);
-    Route::get('/admin/InsertProduct',[Admin0Controller::class,'getProduct']);
-    Route::get('/admin/InsertCategories',[Admin0Controller::class,'getCategories']);
+    Route::get('/admin/getProduct',[Admin0Controller::class,'getProduct']);
+    Route::get('/admin/getCategories',[Admin0Controller::class,'getCategories']);
 });
