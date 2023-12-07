@@ -5,12 +5,22 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\search1;
+use App\Models\Categorie;
+use App\Models\Product;
 use App\Models\User;
 use App\Traits\HttpResponses;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+
+use League\Config\Exception\ValidationException as ExceptionValidationException;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Validation\Rules\Password as RulesPassword;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -47,12 +57,65 @@ class AuthController extends Controller
         ]);
 
     }
-    
+    public function search(search1 $request){
+        $request->validated($request->all);
+        $search=Categorie::where('name','like','%'.$request->name.'%')->get('name');
+        if($search->isEmpty()){
+            $search=Product::where('Commercial_name','like','%'.$request->name.'%')->get('name');
+        }
+        return $search;
+    }
     public function Logout(Request $request){
     $request->user()->currentAccessToken()->delete();
     return $this->success([
         'message'=>'you have successfully been logged out',
         'data'=>$request->user()
     ],200);
+    }
+
+    public function forgetpassword(Request $request){
+        $request->validate([
+            'email'=>'required|email',
+            
+        ]);
+
+        $status=Password::sendResetLink(
+            $request->only('email')
+        );
+     if($status==Password::RESET_LINK_SENT){
+        return[
+            'status'=>__($status)
+        ];
+     }
+     throw ValidationException::withMessages([
+        'email'=>[trans($status)],
+     ]);
+   
+    }
+    public function resetpassword(Request $request){
+        $request->validate([
+            'token'=>'required',
+            'email'=>'required|email',
+            'password'=>['required','confirmed',RulesPassword::defaults()],
+        ]);
+        $status=Password::reset(
+            $request->only('email','password','password_confirmation','token'),
+            function ($user) use($request){
+                $user->forceFill([
+                    'password'=>Hash::make($request->password),
+                    'remember_token'=>Str::random(60),
+                ])->save();
+            event(new PasswordReset($user));
+            }
+        );
+        if($status==Password::PASSWORD_RESET){
+            return response([
+                'message'=>'Password reset successfully',
+            ]);
+        }
+        return response([
+            'message'=>__($status)
+        ],500);
+
     }
 }

@@ -26,7 +26,9 @@ Route::post('/register',[AuthController::class,'Register']);
 
 Route::post('/login',[AuthController::class,'Login']);
 Route::group(['middleware'=>['auth:sanctum']],function(){
-
+    Route::post('/forgetpassword',[AuthController::class,'forgetpassword']);
+    Route::post('/resetpassword',[AuthController::class,'resetpassword']);
+  
     Route::post('/logout',[AuthController::class,'Logout']);
 
 });
