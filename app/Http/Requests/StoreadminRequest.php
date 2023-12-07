@@ -23,7 +23,7 @@ class StoreadminRequest extends FormRequest
     {
         return [
             'name'=>['required','string'],
-            'phone'=>['required','max:10','unique:users'],
+            'phone'=>['required','max:10'],
             'password'=>['required']
         ];
     }

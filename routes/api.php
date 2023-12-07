@@ -29,7 +29,6 @@ Route::group(['middleware'=>['auth:sanctum']],function(){
 
     Route::post('/logout',[AuthController::class,'Logout']);
 
-    Route::resource('/tasks',TaskController::class);
 });
 
 Route::post('/admin/login',[Admin0Controller::class,'Login']);
