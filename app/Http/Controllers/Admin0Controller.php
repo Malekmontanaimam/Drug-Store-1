@@ -57,10 +57,31 @@ class Admin0Controller extends Controller
         ]);
         }
         public function InsertProduct(InsertIntoProduct $request){
-            $product=Product::create($request->validated());
+          
+            if(  $product=Product::create($request->validated())){
+                return response([
+                    'data'=>$product,
+                    'message'=>'you  insert product successfully',
+                ]);
+            }
+            return response([
+                
+                'message'=>'somthing wrong'
+            ],500);
+    
+
         }
         public function InsertCategories(InsertIntoCategories $request){
-            $product=Categorie::create($request->validated());
+            
+            if( $product=Categorie::create($request->validated())){
+                return response([
+                    'data'=>$product,
+                    'message'=>'you  insert Categories successfully',
+                ]);
+            }
+            return response([
+                'message'=>'somthing wrong'
+            ],500);
         }
         public function getProduct(){
             $product=Product::get();
