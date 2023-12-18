@@ -26,9 +26,12 @@ Route::post('/register',[AuthController::class,'Register']);
 Route::post('/login',[AuthController::class,'Login']);
 
 Route::group(['middleware'=>['auth:sanctum']],function(){
-    Route::post('/logout',[AuthController::class,'Logout']);
-    // Route::resource('/tasks',TaskController::class);
+    Route::post('/forgetpassword',[AuthController::class,'forgetpassword']);
+    Route::post('/resetpassword',[AuthController::class,'resetpassword']);
     Route::post('/search',[AuthController::class,'search']);
+  
+    Route::post('/logout',[AuthController::class,'Logout']);
+    // Route::resource('/tasks',TaskController::class)
 Route::post('/show',[AuthController::class,'show']);
 
 });
