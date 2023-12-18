@@ -22,11 +22,7 @@ class search1 extends FormRequest
     public function rules(): array
     {
         return [
-<<<<<<< HEAD
-            'name'=>['required']
-=======
             'name'=>['required','string'],
->>>>>>> 2e0dc133fa2708e38aedcaf1ffd1e16ce217dd4d
         ];
     }
 }

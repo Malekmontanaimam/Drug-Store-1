@@ -50,9 +50,10 @@ class User extends Authenticatable
         return $this->belongsTo(Order::class,'user_order','id');
 
 
-    public function sendPasswordResetNotification($token)
+     function sendPasswordResetNotification($token)
     {
         $url='https://spa.test/reset-password?token=' . $token;
         $this->notify(new ResetPasswordNotification($url));  
     }
+}
 }
