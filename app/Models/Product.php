@@ -20,11 +20,11 @@ class Product extends Model
     
     protected $table ='products';
     function category(){
-        return $this->belongsTo(Categories::class,'category_id','id');
+        return $this->belongsTo(Categorie::class,'category_id','id');
 
     }
-    function productorder(){
-        return $this->belongsTo(ProductOrder::class,'product_id','id');
-        
+   public function orders()
+    {
+        return $this->belongsToMany(Order::class)->withPivot('quantity');
     }
 }

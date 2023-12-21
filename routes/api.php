@@ -1,5 +1,5 @@
 <?php
-
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\TaskController;
 use App\Http\Controllers\Admin0Controller;
@@ -33,6 +33,8 @@ Route::group(['middleware'=>['auth:sanctum']],function(){
     Route::post('/logout',[AuthController::class,'Logout']);
     // Route::resource('/tasks',TaskController::class)
 Route::post('/show',[AuthController::class,'show']);
+Route::post('/order',[OrderController::class,'addproduct']);
+
 
 });
 

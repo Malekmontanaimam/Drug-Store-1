@@ -15,9 +15,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
-use App\Http\Requests\search1;
-use App\Models\Product;
-use App\Models\Categorie;
+
+use App\Models\Order;
+use App\Http\Resources\OrderResource;
+
+use App\Models\ProductOrder;
 
 
 use League\Config\Exception\ValidationException as ExceptionValidationException;
@@ -63,11 +65,30 @@ class AuthController extends Controller
     }
     public function search(search1 $request){
         $request->validated($request->all);
-        $search=Categorie::where('name','like','%'.$request->name.'%')->get('name');
-        if($search->isEmpty()){
-            $search=Product::where('Commercial_name','like','%'.$request->name.'%')->get('name');
+        $search=Categorie::where('name','like','%'.$request->name.'%')->get();
+        if(!($search->isEmpty())){
+            return response([
+                'data'=>$search,
+                'messag'=>'you search in categorie'
+            ]);
         }
-        return $search;
+     else if($search->isEmpty()) {
+        
+        $search=Product::where('commercial_name','like','%'.$request->name.'%')->get(); 
+         }
+    if(!($search->isEmpty())){
+                return response([
+                    'data'=>$search,
+                    'messag'=>'you search in commercial_name'
+                ]);
+        }
+       else if($search->isEmpty()) 
+       {
+    
+            return response([
+                'messag'=>'not found'
+            ]);
+       }
     }
     public function Logout(Request $request){
     $request->user()->currentAccessToken()->delete();
@@ -76,18 +97,9 @@ class AuthController extends Controller
         'data'=>$request->user()
     ],200);
     }
-<<<<<<< HEAD
-    public function search(search1  $request)
-    {
-     $request->validated($request->all);
-         
-     $search=Categorie::where('name','like','%'.$request->name.'%')->get('name');
-     if($search->isEmpty()){
-           $search=Product::where('commercial_name','like','%'.$request->name.'%')->get('commercial_name');
-     }
-     return $search;
+   
+    
 
-    }
     public function show(Request $request)
     {
         $validated = $request->validate([
@@ -96,7 +108,6 @@ class AuthController extends Controller
         $name=Product::where('category_id',$request->name)->get('scientific_name');
         return $name;
     }
-=======
 
     public function forgetpassword(Request $request){
         $request->validate([
@@ -143,5 +154,6 @@ class AuthController extends Controller
         ],500);
 
     }
->>>>>>> 2e0dc133fa2708e38aedcaf1ffd1e16ce217dd4d
+    
 }
+
