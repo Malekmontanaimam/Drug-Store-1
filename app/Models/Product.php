@@ -18,10 +18,15 @@ class Product extends Model
         'cost'
     ];
     
+    
     protected $table ='products';
     function category(){
-        return $this->belongsTo(Categories::class,'category_id','id');
+        return $this->belongsTo(Categorie::class,'category_id','id');
 
 
     }
+    public function orders()
+{
+    return $this->belongsToMany(Order::class)->withPivot('quantity');
+}
 }

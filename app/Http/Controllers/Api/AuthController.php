@@ -10,8 +10,10 @@ use App\Models\Categorie;
 use App\Models\Product;
 use App\Models\User;
 use App\Traits\HttpResponses;
-
+use App\Models\Order;
 use Illuminate\Http\Request;
+use App\Http\Resources\OrderResource;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
@@ -59,11 +61,29 @@ class AuthController extends Controller
     }
     public function search(search1 $request){
         $request->validated($request->all);
-        $search=Categorie::where('name','like','%'.$request->name.'%')->get('name');
-        if($search->isEmpty()){
-            $search=Product::where('Commercial_name','like','%'.$request->name.'%')->get('name');
+        $search=Categorie::where('name','like','%'.$request->name.'%')->get();
+        if(!$search->isEmpty()){
+            return response([
+                'data'=>$search,
+                'messag'=>'you search in categorie'
+            ]);
         }
-        return $search;
+     else {
+                $search=Product::where('Commercial_name','like','%'.$request->name.'%')->get(); 
+         }
+    if(!$search->isEmpty()){
+                return response([
+                    'data'=>$search,
+                    'messag'=>'you search in product'
+                ]);
+        }
+       else 
+       {
+    
+            return response([
+                'messag'=>'not found'
+            ]);
+       }
     }
     public function Logout(Request $request){
     $request->user()->currentAccessToken()->delete();
@@ -118,4 +138,33 @@ class AuthController extends Controller
         ],500);
 
     }
+
+  
+    public function makeOrder(User $user, Request $request)
+{
+    
+    $validatedData = $request->validate([
+        'user_id' => 'required|integer|exists:users,id',
+        'products' => 'required|array',
+        'products.*.id' => 'required|integer|exists:products,id',
+        'products.*.quantity' => 'required|integer|min:1',
+    ]);
+
+    
+    $user = auth()->user();
+
+    $order = Order::create([
+        'user_id' => $validatedData['user_id'],
+    ]);
+
+    
+   
+    foreach ($validatedData['products'] as $productData) {
+        $order->products()->attach($productData['id'], ['quantity' => $productData['quantity']]);
+    }
+
+   
+    return new OrderResource($order);
+}
+
 }

@@ -26,13 +26,14 @@ Route::post('/register',[AuthController::class,'Register']);
 
 Route::post('/login',[AuthController::class,'Login']);
 Route::group(['middleware'=>['auth:sanctum']],function(){
-    Route::post('/forgetpassword',[AuthController::class,'forgetpassword']);
-    Route::post('/resetpassword',[AuthController::class,'resetpassword']);
+   
     Route::post('/search',[AuthController::class,'search']);
-  
+    Route::post('/makeOrder',[AuthController::class,'makeOrder']);
     Route::post('/logout',[AuthController::class,'Logout']);
 
 });
+Route::post('/forgetpassword',[AuthController::class,'forgetpassword']);
+Route::post('/resetpassword',[AuthController::class,'resetpassword']);
 
 Route::post('/admin/login',[Admin0Controller::class,'Login']);
 Route::post('/admin/register',[Admin0Controller::class,'register']);
@@ -44,4 +45,5 @@ Route::group(['middleware'=>['auth:sanctum']],function(){
     Route::post('/admin/InsertCategories',[Admin0Controller::class,'InsertCategories']);
     Route::get('/admin/getProduct',[Admin0Controller::class,'getProduct']);
     Route::get('/admin/getCategories',[Admin0Controller::class,'getCategories']);
+
 });
