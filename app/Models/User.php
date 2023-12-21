@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+ use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use App\Notifications\ResetPasswordNotification;
 use Illuminate\Auth\Notifications\ResetPassword;
@@ -50,9 +50,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-    public function sendPasswordResetNotification($token)
+    function order(){
+        return $this->belongsTo(Order::class,'user_order','id');
+
+
+     function sendPasswordResetNotification($token)
     {
         $url='https://spa.test/reset-password?token=' . $token;
         $this->notify(new ResetPasswordNotification($url));  
     }
+}
 }

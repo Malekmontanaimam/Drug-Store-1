@@ -23,7 +23,10 @@ class Product extends Model
     function category(){
         return $this->belongsTo(Categorie::class,'category_id','id');
 
-
+    }
+    function productorder(){
+        return $this->belongsTo(ProductOrder::class,'product_id','id');
+        
     }
     public function orders()
 {

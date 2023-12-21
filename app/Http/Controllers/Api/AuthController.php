@@ -17,6 +17,10 @@ use App\Http\Resources\OrderResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\search1;
+use App\Models\Product;
+use App\Models\Categorie;
+
 
 use League\Config\Exception\ValidationException as ExceptionValidationException;
 use Illuminate\Support\Facades\Password;
@@ -92,6 +96,27 @@ class AuthController extends Controller
         'data'=>$request->user()
     ],200);
     }
+<<<<<<< HEAD
+    public function search(search1  $request)
+    {
+     $request->validated($request->all);
+         
+     $search=Categorie::where('name','like','%'.$request->name.'%')->get('name');
+     if($search->isEmpty()){
+           $search=Product::where('commercial_name','like','%'.$request->name.'%')->get('commercial_name');
+     }
+     return $search;
+
+    }
+    public function show(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required',
+        ]);
+        $name=Product::where('category_id',$request->name)->get('scientific_name');
+        return $name;
+    }
+=======
 
     public function forgetpassword(Request $request){
         $request->validate([
@@ -138,6 +163,7 @@ class AuthController extends Controller
         ],500);
 
     }
+<<<<<<< HEAD
 
   
     public function makeOrder(User $user, Request $request)
@@ -167,4 +193,7 @@ class AuthController extends Controller
     return new OrderResource($order);
 }
 
+=======
+>>>>>>> 2e0dc133fa2708e38aedcaf1ffd1e16ce217dd4d
+>>>>>>> 57094399a488731a7f13d5debd20291199125561
 }

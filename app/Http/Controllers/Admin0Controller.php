@@ -13,6 +13,21 @@ use App\Models\Categorie;
 use App\Models\Product;
 use App\Traits\HttpResponses;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginRequest;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use App\Http\Requests\search1;
+
+
+
+
+
+
+
+
+
 
 class Admin0Controller extends Controller
     
@@ -55,7 +70,13 @@ class Admin0Controller extends Controller
         return $this->success([
             'message'=>'you have successfully been logged out',
         ]);
-        }
+        return $this->success([
+            'user'=>$user,
+            'token'=>$user->createToken('API Token of' .$user->name)->plainTextToken,
+        ]);
+    }
+
+
         public function InsertProduct(InsertIntoProduct $request){
           
             if(  $product=Product::create($request->validated())){
