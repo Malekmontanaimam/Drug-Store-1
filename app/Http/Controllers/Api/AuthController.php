@@ -5,9 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
-use App\Http\Requests\search1;
-use App\Models\Categorie;
-use App\Models\Product;
+
 use App\Models\User;
 use App\Traits\HttpResponses;
 use App\Models\Order;
@@ -47,11 +45,11 @@ class AuthController extends Controller
     }
 
     public function Login(LoginRequest $request){
-       
+
         if(!Auth::attempt($request->validated())){
             return $this->error('','Credentials do not match',401);
 
-        }  
+        }
        // $user=DB::table('users')->where($request->phone)->get();
     //   $user= DB::select('select * from users where phone = ?', $request->phone);
         $users=User::where('phone',$request->phone)->first();
@@ -59,7 +57,7 @@ class AuthController extends Controller
         return $this->success([
             'user'=>$users,
             'token'=>$users->createToken('API Token of' .$users->name)->plainTextToken,
-  
+
         ]);
 
     }
@@ -73,7 +71,7 @@ class AuthController extends Controller
             ]);
         }
      else {
-                $search=Product::where('Commercial_name','like','%'.$request->name.'%')->get(); 
+                $search=Product::where('Commercial_name','like','%'.$request->name.'%')->get();
          }
     if(!$search->isEmpty()){
                 return response([
@@ -81,9 +79,9 @@ class AuthController extends Controller
                     'messag'=>'you search in product'
                 ]);
         }
-       else 
+       else
        {
-    
+
             return response([
                 'messag'=>'not found'
             ]);
@@ -96,18 +94,7 @@ class AuthController extends Controller
         'data'=>$request->user()
     ],200);
     }
-<<<<<<< HEAD
-    public function search(search1  $request)
-    {
-     $request->validated($request->all);
-         
-     $search=Categorie::where('name','like','%'.$request->name.'%')->get('name');
-     if($search->isEmpty()){
-           $search=Product::where('commercial_name','like','%'.$request->name.'%')->get('commercial_name');
-     }
-     return $search;
 
-    }
     public function show(Request $request)
     {
         $validated = $request->validate([
@@ -116,12 +103,11 @@ class AuthController extends Controller
         $name=Product::where('category_id',$request->name)->get('scientific_name');
         return $name;
     }
-=======
 
     public function forgetpassword(Request $request){
         $request->validate([
             'email'=>'required|email',
-            
+
         ]);
 
         $status=Password::sendResetLink(
@@ -135,7 +121,7 @@ class AuthController extends Controller
      throw ValidationException::withMessages([
         'email'=>[trans($status)],
      ]);
-   
+
     }
     public function resetpassword(Request $request){
         $request->validate([
@@ -163,12 +149,12 @@ class AuthController extends Controller
         ],500);
 
     }
-<<<<<<< HEAD
 
-  
+
+
     public function makeOrder(User $user, Request $request)
 {
-    
+
     $validatedData = $request->validate([
         'user_id' => 'required|integer|exists:users,id',
         'products' => 'required|array',
@@ -176,24 +162,21 @@ class AuthController extends Controller
         'products.*.quantity' => 'required|integer|min:1',
     ]);
 
-    
+
     $user = auth()->user();
 
     $order = Order::create([
         'user_id' => $validatedData['user_id'],
     ]);
 
-    
-   
+
+
     foreach ($validatedData['products'] as $productData) {
         $order->products()->attach($productData['id'], ['quantity' => $productData['quantity']]);
     }
 
-   
+
     return new OrderResource($order);
 }
 
-=======
->>>>>>> 2e0dc133fa2708e38aedcaf1ffd1e16ce217dd4d
->>>>>>> 57094399a488731a7f13d5debd20291199125561
 }
