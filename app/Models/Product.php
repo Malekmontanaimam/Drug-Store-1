@@ -17,8 +17,8 @@ class Product extends Model
         'createdat',
         'cost'
     ];
-    
-    
+
+
     protected $table ='products';
     function category(){
         return $this->belongsTo(Categorie::class,'category_id','id');
@@ -28,8 +28,5 @@ class Product extends Model
     {
         return $this->belongsToMany(Order::class)->withPivot('quantity');
     }
-    public function orders()
-{
-    return $this->belongsToMany(Order::class)->withPivot('quantity');
-}
+
 }
