@@ -26,11 +26,19 @@ class User extends Authenticatable
         'email',
         'password',
     ];
+<<<<<<< HEAD
          
     public function orders()
     {
         return $this->hasMany(Order::class);
     }
+=======
+    public function orders(){
+        return $this->hasMany(Order::class);
+
+    }
+
+>>>>>>> b5aa45f6c0370f681e437858ac872f224b6a7c2c
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -50,14 +58,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-    function order(){
-        return $this->belongsTo(Order::class,'user_order','id');
-
-
+  
      function sendPasswordResetNotification($token)
     {
         $url='https://spa.test/reset-password?token=' . $token;
         $this->notify(new ResetPasswordNotification($url));  
     }
-}
+
 }

@@ -15,9 +15,11 @@ use App\Http\Resources\OrderResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
-use App\Http\Requests\search1;
-use App\Models\Product;
-use App\Models\Categorie;
+
+use App\Models\Order;
+use App\Http\Resources\OrderResource;
+
+use App\Models\ProductOrder;
 
 
 use League\Config\Exception\ValidationException as ExceptionValidationException;
@@ -64,7 +66,9 @@ class AuthController extends Controller
     public function search(search1 $request){
         $request->validated($request->all);
         $search=Categorie::where('name','like','%'.$request->name.'%')->get();
+
         if(!$search->isEmpty()){
+
             return response([
                 'data'=>$search,
                 'messag'=>'you search in categorie'
@@ -94,6 +98,11 @@ class AuthController extends Controller
         'data'=>$request->user()
     ],200);
     }
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> b5aa45f6c0370f681e437858ac872f224b6a7c2c
 
     public function show(Request $request)
     {
@@ -149,6 +158,7 @@ class AuthController extends Controller
         ],500);
 
     }
+<<<<<<< HEAD
 
 
 
@@ -179,4 +189,8 @@ class AuthController extends Controller
     return new OrderResource($order);
 }
 
+=======
+
+>>>>>>> b5aa45f6c0370f681e437858ac872f224b6a7c2c
 }
+

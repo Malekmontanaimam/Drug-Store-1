@@ -12,6 +12,7 @@ class OrderResource extends JsonResource
      *
      * @return array<string, mixed>
      */
+<<<<<<< HEAD
    public function toArray($request)
 {
     return [
@@ -39,4 +40,32 @@ class OrderResource extends JsonResource
         }),
     ];
 }
+=======
+    public function toArray(Request $request)
+    {
+        return [
+            'id'=>$this->id,
+            'user_id'=>$this->user_id,
+            'created_at'=>$this->created_at,
+            'updated_at'=>$this->updated_at,
+            'Products'=>$this->Products->map(function ($product)
+            {
+                return [
+                    'id'=>$product->id,
+                    'category_id'=>$product->category_id,
+                    'product_name'=>$product->product_name,
+                    'scientific_name'=>$product->scientific_name,
+                    'commercial_name'=>$product->commercial_name,
+                    'company'=>$product->company,
+                    'quantity_available'=>$product->quantity_available,
+                    'createdat'=>$product->createdat,
+                    'cost'=>$product->cost,
+                    'pivot'=>[
+                        'quantity'=>$product->pivot->quantity,
+                    ],
+                    ];
+            }),
+        ];
+    }
+>>>>>>> b5aa45f6c0370f681e437858ac872f224b6a7c2c
 }
