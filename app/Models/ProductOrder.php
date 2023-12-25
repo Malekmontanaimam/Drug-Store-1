@@ -15,6 +15,6 @@ class ProductOrder extends Model
         'user_id'
         ];
         
-        protected $table ='product_order';
+        protected $table ='order_product';
        
 }

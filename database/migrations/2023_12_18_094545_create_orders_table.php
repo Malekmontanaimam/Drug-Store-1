@@ -14,10 +14,14 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')
-            ->cascadeOnDelete('cascade');
+                ->cascadeOnDelete('cascade');
+            $table->enum('status', ['In_Preparation', 'Has_Been_Sent', 'Received'])->default('In_Preparation');
+            $table->enum('payment_status', ['paid', 'not_paid'])->default('not_paid');
+            $table->double('order_price');
             $table->timestamps();
         });
     }
+
 
     /**
      * Reverse the migrations.

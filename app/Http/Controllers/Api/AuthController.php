@@ -154,6 +154,24 @@ class AuthController extends Controller
         ],500);
 
     }
-    
-}
+   
+public function getOrderDetailsid()
+{
+    $user = auth()->user();
 
+    
+    $orderDetails = Order::where('user_id', $user->id)->with('products')->get();
+
+    if($orderDetails){
+        return response([
+            'data'=>$orderDetails ,
+            'message'=>'this is your order',
+        ]);
+    }
+
+    return response([
+        'message'=>'you do not have any orders yet'
+    ],500);
+}
+}
+    
